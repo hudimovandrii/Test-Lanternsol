@@ -1,0 +1,187 @@
+{% assign selected_variant = product.selected_or_first_available_variant %}
+{% assign table_items = selected_variant.metafields.custom.variant_table.value %}
+
+{% if table_items != blank %}
+  <div class="variant-specs-section">
+    <div class="variant-specs-section-container">
+      {% if section.settings.eyebrow != blank %}
+        <div class="specs-eyebrow">
+          <span>{{ section.settings.eyebrow }}</span>
+        </div>
+      {% endif %}
+
+      {% if section.settings.title != blank %}
+        <h2 class="specs-title">
+          {{ section.settings.title }}
+          {% if section.settings.title_italic != blank %}
+            <suffix>{{ section.settings.title_italic }}</suffix>
+          {% endif %}
+        </h2>
+      {% endif %}
+
+      {% if section.settings.subtitle != blank %}
+        <p class="specs-subtitle">{{ section.settings.subtitle }}</p>
+      {% endif %}
+
+      <div class="specs-grid">
+        {% for metaobject in table_items %}
+          <div class="spec-card">
+            <p class="spec-card-title">{{ metaobject.title.value }}</p>
+            <p class="spec-card-value">{{ metaobject.value.value }}</p>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+<style>
+  .variant-specs-section-container {
+    max-width: 1240px;
+    width: 100%;
+  }
+  .variant-specs-section {
+    padding: 50px 20px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .specs-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+  }
+  .specs-eyebrow span {
+    font-family: "DM Sans"
+    , sans-serif;
+    font-weight: 400;
+    font-style: Regular;
+    font-size: 12px;
+    leading-trim: NONE;
+    line-height: 100%;
+    letter-spacing: 15%;
+    text-align: center;
+    text-transform: uppercase;
+    color: #8B0000;
+  }
+  .specs-eyebrow::after {
+    content: '';
+    flex: 0 0 40px;
+    height: 1.5px;
+    background: #8B0000;
+  }
+
+  .specs-title {
+    font-family: "Lora"
+    , serif;
+    font-weight: 700;
+    font-style: Bold;
+    font-size: 43px;
+    leading-trim: NONE;
+    line-height: 100%;
+    letter-spacing: 0;
+    margin-bottom: 15px;
+    margin-top: 0;
+    color: #020202;
+  }
+  .specs-title suffix {
+    color: #B22222;
+    font-style: normal;
+  }
+
+  .specs-subtitle {
+    font-family: "DM Sans"
+    , sans-serif;
+    font-weight: 400;
+    font-style: Regular;
+    font-size: 15px;
+    leading-trim: NONE;
+    line-height: 100%;
+    letter-spacing: 0;
+    margin-bottom: 30px;
+  }
+
+  .specs-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+
+  .spec-card {
+    gap: 10px;
+    border-radius: 8px;
+    border-width: 1px;
+    padding: 17px;
+    border: 1px solid #D0D0D0;
+  }
+  .spec-card-title {
+    font-family: "Lora"
+    , serif;
+    font-weight: 600;
+    font-style: SemiBold;
+    font-size: 25px;
+    leading-trim: NONE;
+    line-height: 29px;
+    letter-spacing: 0;
+    margin: 0 0 4px;
+  }
+  .spec-card-value {
+    font-family: "DM Sans"
+    , sans-serif;
+    font-weight: 400;
+    font-style: Regular;
+    font-size: 12px;
+    leading-trim: NONE;
+    line-height: 100%;
+    letter-spacing: 0;
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    .specs-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 480px) {
+    .specs-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+
+{% schema %}
+  {
+    "name": "PDP variant table",
+    "settings": [
+      {
+        "type": "text",
+        "id": "eyebrow",
+        "label": "Eyebrow text",
+        "default": "What's inside"
+      }, {
+        "type": "text",
+        "id": "title",
+        "label": "Title (plain text)",
+        "default": "The Complete Snowboard"
+      }, {
+        "type": "text",
+        "id": "title_italic",
+        "label": "Title (suffix)",
+        "default": "Specs",
+        "info": "This part of the title after the plain text above."
+      }, {
+        "type": "textarea",
+        "id": "subtitle",
+        "label": "Subtitle",
+        "default": "Complete snowboard variants. Pre-tuned, waxed, and ready to ride."
+      }
+    ],
+    "presets": [
+      {
+        "name": "PDP variant table"
+      }
+    ]
+  }
+{% endschema %}
