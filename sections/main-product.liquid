@@ -718,6 +718,23 @@
           ],
           "default": "button",
           "label": "t:sections.main-product.blocks.variant_picker.settings.picker_type.label"
+        },
+        {
+          "type": "select",
+          "id": "variant_picker_pills_type",
+          "label": "Variant option type",
+          "default": "image",
+          "options": [
+            {
+              "value": "text",
+              "label": "Text"
+            },
+            {
+              "value": "image",
+              "label": "Image"
+            }
+          ],
+          "visible_if": "{{ block.settings.picker_type == 'button' }}"
         }
       ]
     },
