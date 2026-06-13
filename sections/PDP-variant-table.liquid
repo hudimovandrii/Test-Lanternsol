@@ -1,41 +1,45 @@
 {% assign selected_variant = product.selected_or_first_available_variant %}
 {% assign table_items = selected_variant.metafields.custom.variant_table.value %}
 
-{% if table_items != blank %}
-  <div class="variant-specs-section">
-    <div class="variant-specs-section-container">
-      {% if section.settings.eyebrow != blank %}
-        <div class="specs-eyebrow">
-          <span>{{ section.settings.eyebrow }}</span>
-        </div>
-      {% endif %}
 
-      {% if section.settings.title != blank %}
-        <h2 class="specs-title">
-          {{ section.settings.title }}
-          {% if section.settings.title_italic != blank %}
-            <suffix>{{ section.settings.title_italic }}</suffix>
-          {% endif %}
-        </h2>
-      {% endif %}
-
-      {% if section.settings.subtitle != blank %}
-        <p class="specs-subtitle">{{ section.settings.subtitle }}</p>
-      {% endif %}
-
-      <div class="specs-grid">
-        {% for metaobject in table_items %}
-          <div class="spec-card">
-            <p class="spec-card-title">{{ metaobject.title.value }}</p>
-            <p class="spec-card-value">{{ metaobject.value.value }}</p>
-          </div>
-        {% endfor %}
+<div class="variant-specs-section {% if table_items == blank %}hide--section{% endif %}">
+  <div class="variant-specs-section-container">
+    {% if section.settings.eyebrow != blank %}
+      <div class="specs-eyebrow">
+        <span>{{ section.settings.eyebrow }}</span>
       </div>
+    {% endif %}
+
+    {% if section.settings.title != blank %}
+      <h2 class="specs-title">
+        {{ section.settings.title }}
+        {% if section.settings.title_italic != blank %}
+          <suffix>{{ section.settings.title_italic }}</suffix>
+        {% endif %}
+      </h2>
+    {% endif %}
+
+    {% if section.settings.subtitle != blank %}
+      <p class="specs-subtitle">{{ section.settings.subtitle }}</p>
+    {% endif %}
+
+    <div class="specs-grid">
+      {% for metaobject in table_items %}
+        <div class="spec-card">
+          <p class="spec-card-title">{{ metaobject.title.value }}</p>
+          <p class="spec-card-value">{{ metaobject.value.value }}</p>
+        </div>
+      {% endfor %}
     </div>
   </div>
-{% endif %}
+</div>
+
 
 <style>
+  .hide--section {
+    display: none !important;
+  }
+
   .variant-specs-section-container {
     max-width: 1240px;
     width: 100%;
