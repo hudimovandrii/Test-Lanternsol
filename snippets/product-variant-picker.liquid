@@ -11,7 +11,10 @@
 {% endcomment %}
 {%- unless product.has_only_default_variant -%}
   {%- if block.settings.picker_type == 'button' -%}
-    <variant-radios
+      {% comment %} assign variant option type from section schema {% endcomment %}
+        {%  assign variant_option_type =  block.settings.variant_picker_pills_type %}
+      {% comment %} assign variant option type from section schema {% endcomment %}
+      <variant-radios
       id="variant-radios-{{ section.id }}"
       class="no-js-hidden"
       data-section="{{ section.id }}"
@@ -24,7 +27,7 @@
       {%- for option in product.options_with_values -%}
         <fieldset class="js product-form__input">
           <legend class="form__label">{{ option.name }}</legend>
-          {% render 'product-variant-options', product: product, option: option, block: block %}
+          {% render 'product-variant-options', product: product, option: option, block: block, variant_option_type: variant_option_type  %}
         </fieldset>
       {%- endfor -%}
       <script type="application/json">

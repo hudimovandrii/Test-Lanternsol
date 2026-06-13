@@ -21,7 +21,8 @@
   assign variants_option3_arr = product.variants | map: 'option3'
 
   assign product_form_id = 'product-form-' | append: section.id
--%}
+  assign variant_option_type = block.settings.variant_picker_pills_type
+  -%}
 
 {%- for value in option.values -%}
   {%- liquid
@@ -43,6 +44,26 @@
           endif
       endcase
     endfor
+
+    assign variant_image = nil
+    unless variant_option_type == 'text'
+      for variant in product.variants
+        case option.position
+          when 1
+            if variant.option1 == value
+              assign variant_image = variant.metafields.custom.variant_icon | image_url: width: 80
+            endif
+          when 2
+            if variant.option2 == value and variant.option1 == product.selected_or_first_available_variant.option1
+              assign variant_image = variant.metafields.custom.variant_icon | image_url: width: 80
+            endif
+          when 3
+            if variant.option3 == value and variant.option1 == product.selected_or_first_available_variant.option1 and variant.option2 == product.selected_or_first_available_variant.option2
+              assign variant_image = variant.metafields.custom.variant_icon | image_url: width: 80
+            endif
+        endcase
+      endfor
+    endunless
   -%}
 
   {%- if block.settings.picker_type == 'button' -%}
@@ -59,8 +80,22 @@
         class="disabled"
       {% endif %}
     >
-    <label for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}">
-      {{ value -}}
+    <label for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}"  class="{%- if variant_option_type == 'image' and variant_image != blank -%}variant-option-type--image{% endif %}">
+      {%- if variant_option_type == 'text' -%}
+        {{- value -}}
+      {%- else -%}
+        {%- if variant_image -%}
+          <img
+            src="{{ variant_image }}"
+            alt="{{ value | escape }}"
+            width="40"
+            height="40"
+            loading="lazy"
+          >
+        {%- else -%}
+          {{- value -}}
+        {%- endif -%}
+      {%- endif -%}
       <span class="visually-hidden">{{ 'products.product.variant_sold_out_or_unavailable' | t }}</span>
     </label>
   {%- elsif block.settings.picker_type == 'dropdown' -%}
